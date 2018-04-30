@@ -2,16 +2,31 @@
   <div id="quote">
     <h1>{{ quoteText }}</h1>
     <h2>{{ quoteAuthor }}</h2>
+    <button @click="loadQuote">New Quote</button>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
-            quoteText: 'test text',
-            quoteAuthor: 'Some Name',
+            quoteText: '',
+            quoteAuthor: '',
         };
+    },
+    created() {
+        this.loadQuote();
+    },
+    methods: {
+        loadQuote() {
+            axios.get('http://localhost:3000')
+                .then(res => {
+                    this.quoteText = res.data.text;
+                    this.quoteAuthor = res.data.author.name;
+                });
+        },
     },
 };
 </script>
